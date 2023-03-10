@@ -5,7 +5,7 @@ const userSchema = new Schema({
         type: String,
         unique: true,
         required: true,
-        trimmed: true,
+        trim: true,
 
     },
     email: {
@@ -14,6 +14,7 @@ const userSchema = new Schema({
         unique: true,
         match: [/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/],
     },
+    
     thoughts: [
         {
             type: Schema.Types.ObjectId,
@@ -26,11 +27,13 @@ const userSchema = new Schema({
             ref: 'User',
         }
     ],                                  //class assigment #21
-    toJSON: {
-        virtuals: true,
-    },
-    id: false,
-}
+},
+    {
+        toJSON: {
+            virtuals: true,
+        },
+        id: false,
+    }
 );
 
 // Create a virtual called friendCount that retrieves the length of

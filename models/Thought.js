@@ -1,7 +1,6 @@
 const { Schema, model, Types } = require('mongoose');
-const mongoose = require('mongoose');
 
-const reactionSchema = new mongoose.Schema({
+const reactionSchema = new Schema({
     reactionId: {
         type: Schema.Types.ObjectId,
         default: () => new Types.ObjectId(), // Assigment #25
@@ -19,10 +18,11 @@ const reactionSchema = new mongoose.Schema({
     createAt: {
         type: Date,
         default: Date.now,
-        get: (timeStamp) => dateFormat(timeStamp),               //
     },
+},
+{
     toJSON: {
-        virtuals: true,
+        getters: true,
     },
     id: false,
 });
@@ -38,7 +38,6 @@ const thoughtSchema = new Schema({
     createdAt: {
         type: Date,
         default: Date.now,
-        get: (timeStamp) => dateFormat(timeStamp),         // Use a getter method to format the timestamp on query
     },
     username: {
         type: String,
@@ -50,7 +49,7 @@ const thoughtSchema = new Schema({
 },
     {
         toJSON: {
-            virtuals: true,
+            getters: true,
         },
         id: false,
     }
@@ -59,7 +58,7 @@ const thoughtSchema = new Schema({
 // Create a virtual called reactionCount that retrieves the length of 
 // the thought's reactions array field on query.
 thoughtSchema.virtual('reactionCount').get(function () {
-    return this.friends.length;
+    return this.reactions.length;
 });
 
 const Thought = model('Thought', thoughtSchema);
